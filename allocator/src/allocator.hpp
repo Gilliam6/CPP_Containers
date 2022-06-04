@@ -7,29 +7,29 @@ namespace ft
 	class allocator
 	{
 	public:
-
-		T				value_type;
-		T*				value;
-		T&				reference;
-		const T*		const_pointer;
-		const T&		const_reference;
-		size_t			size_type;
-		difference_type	ptrdiff_t;
+		typedef T			value_type;
+		typedef T			*pointer;
+		typedef T			&reference;
+		typedef const T*	const_pointer;
+		typedef const T&	const_reference;
+		typedef size_t		size_type;
+		typedef ptrdiff_t 	difference_type;
 //		мембер переменные стандартного аллокатора для переименовывания
 		//______________________________________________________________
-		allocator() throw();
-		allocator (const allocator& alloc) throw();
-		template <class T>
-		allocator (const allocator<T>& alloc) throw(); //стандартные
+		allocator(){};
+		allocator(const allocator& alloc){ *this = alloc; }; //стандартные
+
+		template <typename U>
+		allocator(const allocator<U>& alloc){ *this = alloc; }; //стандартные
 		// конструкторы с cpp reference
 		//______________________________________________________________
-		~allocator ( ) throw; // стандартный деструктор с срр reference
+		~allocator() {}; // стандартный деструктор с срр reference
 		//______________________________________________________________
 		T* allocate(size_t n) const {
-			return ::operator new(n * sizeof(T));
+			return reinterpret_cast<T*>(::operator new(n * sizeof(T)));
 		}; // Функция принимает колличество штук объектов
 
-		void deallocate(T *ptr){
+		void deallocate(T *ptr, size_t){
 			return ::operator delete(ptr);
 		}; // Ф-ция уничтожает выделенное
 
@@ -38,8 +38,9 @@ namespace ft
 			new(ptr) T(args...);
 		}; // Запуск конструкторов с переменным количеством аргументов
 
-			ptr->~T();
-		}; // Запуск деконструкторов
+		void destroy(T& ptr){
+			ptr->~T();}
+		 // Запуск деконструкторов
 		//______________________________________________________________
 		pointer			address( reference ref ) const {return (&ref);};
 		const_pointer	address( const_reference ref ) const {return &ref;};
@@ -47,9 +48,14 @@ namespace ft
 		// прописанные в мембер переменных
 		//______________________________________________________________
 		size_type		max_size() const {
-			return (pow(2, sizeof(void *) * 8)/ size_of(T) - 1);
+			return (std::numeric_limits<size_type>::max() / sizeof(value_type));
 		}
 		// Экспериментальная реализация max_size
+
 	};
+	template <class T, class U>
+	bool operator==(const allocator<T>&, const allocator<U>&) { return true; }
+	template <class T, class U>
+	bool operator!=(const allocator<T>&, const allocator<U>&) { return false; }
 }
 

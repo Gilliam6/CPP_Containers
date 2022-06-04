@@ -1,7 +1,25 @@
 #pragma once
+#include <iostream>
 #include <iterator>
 
-namespace ft{
+namespace ft
+{
+	template <class Category, class T, class Distance = ptrdiff_t,
+			class Pointer = T*, class Reference = T&>
+	struct iterator {
+		typedef T         value_type;
+		typedef Distance  difference_type;
+		typedef Pointer   pointer;
+		typedef Reference reference;
+		typedef Category  iterator_category;
+	};
+
+	struct output_iterator_tag {};
+	struct input_iterator_tag {};
+	struct forward_iterator_tag: input_iterator_tag {};
+	struct bidirectional_iterator_tag: forward_iterator_tag {};
+	struct random_access_iterator_tag: bidirectional_iterator_tag {};
+
 	template<class Iterator>
 	struct iterator_traits
 	{
@@ -31,4 +49,15 @@ namespace ft{
 		typedef const T&	            				reference;
 		typedef ft::random_access_iterator_tag			iterator_category;
 	};
+
+	template<class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type
+	distance (InputIterator first, InputIterator last)
+	{
+		size_t distance = 0;
+		for (; first != last; first++)
+			distance++;
+		return distance;
+	}
+
 }

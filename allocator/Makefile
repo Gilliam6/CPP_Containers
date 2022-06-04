@@ -3,7 +3,7 @@ CPP = c++
 
 NAME = allocator
 
-SOURCE_LIST = tests.cpp
+SOURCE_LIST = main.cpp
 SRC_DIR = src/
 SOURCE = OBJ = $(addprefix $(SRC_DIR), $(SOURCE_LIST))
 
@@ -11,8 +11,8 @@ OBJ_DIR = objects/
 OBJ_LIST = $(patsubst %.cpp, %.o, $(SOURCE_LIST))
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_LIST))
 
-INCLUDE = -Isrc/iterator.hpp
-HEADER = src/iterator.hpp
+INCLUDE = -Isrc/allocator.hpp
+HEADER = src/allocator.hpp
 RM = rm -f
 
 GREEN = \033[0;32m
