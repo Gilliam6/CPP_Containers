@@ -23,7 +23,7 @@ namespace ft{
 			return *tmp;
 		}
 		reverse_iterator operator+ (difference_type n) const {
-			return (_it - n);
+			return reverse_iterator(_it - n);
 		}
 		reverse_iterator operator+= (difference_type n) const {
 			_it -= n;
@@ -53,7 +53,7 @@ namespace ft{
 			return tmp;
 		}
 		reverse_iterator operator- (difference_type n) const {
-			return (_it + n);
+			return reverse_iterator(_it + n);
 		}
 		reverse_iterator operator-= (difference_type n) const {
 			_it += n;

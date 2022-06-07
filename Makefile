@@ -4,9 +4,10 @@ CPP = c++
 NAME = ft_containers
 STD = stdTest
 FT = ftTest
-#TEST_BOOL = -D STATUS=0
+
 TEST_BOOL1 = -D STATUS=1
 TEST_BOOL0 = -D STATUS=0
+
 SOURCE_LIST = vector.cpp
 SRC_DIR = tests/
 SOURCE = OBJ = $(addprefix $(SRC_DIR), $(SOURCE_LIST))
