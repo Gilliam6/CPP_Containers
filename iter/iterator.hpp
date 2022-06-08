@@ -7,27 +7,27 @@ namespace ft
 	template <class Category, class T, class Distance = ptrdiff_t,
 			class Pointer = T*, class Reference = T&>
 	struct iterator {
+		typedef Category  iterator_category;
 		typedef T         value_type;
 		typedef Distance  difference_type;
 		typedef Pointer   pointer;
 		typedef Reference reference;
-		typedef Category  iterator_category;
 	};
-
-	struct output_iterator_tag {};
-	struct input_iterator_tag {};
-	struct forward_iterator_tag: input_iterator_tag {};
-	struct bidirectional_iterator_tag: forward_iterator_tag {};
-	struct random_access_iterator_tag: bidirectional_iterator_tag {};
+//
+//	struct output_iterator_tag {};
+//	struct input_iterator_tag {};
+//	struct forward_iterator_tag: public input_iterator_tag {};
+//	struct bidirectional_iterator_tag: public forward_iterator_tag {};
+//	struct random_access_iterator_tag: public bidirectional_iterator_tag {};
 
 	template<class Iterator>
 	struct iterator_traits
 	{
-		typedef typename Iterator::difference_type		difference_type;
+		typedef typename Iterator::iterator_category    iterator_category;
 		typedef typename Iterator::value_type           value_type;
+		typedef typename Iterator::difference_type		difference_type;
 		typedef typename Iterator::pointer              pointer;
 		typedef typename Iterator::reference            reference;
-		typedef typename Iterator::iterator_category    iterator_category;
 	};
 
 	template<class T>
@@ -37,7 +37,7 @@ namespace ft
 		typedef T							           	value_type;
 		typedef T*              						pointer;
 		typedef T&	            						reference;
-		typedef ft::random_access_iterator_tag			iterator_category;
+		typedef std::random_access_iterator_tag			iterator_category;
 	};
 
 	template<class T>
@@ -47,7 +47,7 @@ namespace ft
 		typedef T							           	value_type;
 		typedef const T*              					pointer;
 		typedef const T&	            				reference;
-		typedef ft::random_access_iterator_tag			iterator_category;
+		typedef std::random_access_iterator_tag			iterator_category;
 	};
 
 	template<class InputIterator>
@@ -59,5 +59,27 @@ namespace ft
 			distance++;
 		return distance;
 	}
+
+//	template <bool is_valid, typename T>
+//	struct valid_iterator_tag_res { typedef T type; const static bool value = is_valid; };
+//
+//	template <typename T>
+//	struct is_input_iterator_tagged : public valid_iterator_tag_res<false, T> { };
+//
+//	template <>
+//	struct is_input_iterator_tagged<ft::random_access_iterator_tag>
+//			: public valid_iterator_tag_res<true, ft::random_access_iterator_tag> { };
+//
+//	template <>
+//	struct is_input_iterator_tagged<ft::bidirectional_iterator_tag>
+//			: public valid_iterator_tag_res<true, ft::bidirectional_iterator_tag> { };
+//
+//	template <>
+//	struct is_input_iterator_tagged<ft::forward_iterator_tag>
+//			: public valid_iterator_tag_res<true, ft::forward_iterator_tag> { };
+//
+//	template <>
+//	struct is_input_iterator_tagged<ft::input_iterator_tag>
+//			: public valid_iterator_tag_res<true, ft::input_iterator_tag> { };
 
 }

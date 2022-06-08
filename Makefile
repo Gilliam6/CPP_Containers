@@ -53,7 +53,7 @@ test: $(STD) $(FT)
 		@./$(FT) > ft
 		@./$(STD) > std
 		@echo "=-=-=-=-= DIFF =-=-=-=-="
-		@diff std ft
+		@diff std ft || true
 		@echo "=-=-=-= END DIFF =-=-=-="
 		@#cat -e ft
 		@rm -f std ft

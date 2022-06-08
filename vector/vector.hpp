@@ -220,7 +220,10 @@ namespace ft{
 				for (iterator it = end(); it != pos - 1; it--)
 				{
 					if (it == pos)
+					{
 						_alloc.construct(&(*it), value);
+						continue;
+					}
 					_alloc.construct(&(*it), *(it - 1));
 				}
 				++_size;

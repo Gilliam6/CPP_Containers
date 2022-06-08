@@ -1,20 +1,27 @@
 #pragma once
 #include "iterator.hpp"
-
+#include <iterator>
 namespace ft
 {
+//	template <class T, class D, class Pt, class Rt>
+//	struct RunIt: iterator<random_access_iterator_tag, T, D, Pt, Rt> {};
+
 	template<typename T>
-	class random_access_iterator :
-			iterator<ft::random_access_iterator_tag, T>
+	class random_access_iterator:
+			ft::iterator<std::random_access_iterator_tag, T>
 	{
 	public:
-		typedef typename ft::iterator<ft::random_access_iterator_tag, T>
-				iterator_type;
-		typedef typename iterator_type::iterator_category iterator_category;
-		typedef typename iterator_type::value_type value_type;
-		typedef typename iterator_type::difference_type difference_type;
-		typedef T *pointer;
-		typedef T &reference;
+		typedef T* iterator_type;
+		typedef typename ft::iterator<std::random_access_iterator_tag,
+		T>::iterator_category iterator_category;
+		typedef typename ft::iterator<std::random_access_iterator_tag,
+		T>::value_type value_type;
+		typedef typename ft::iterator<std::random_access_iterator_tag,
+		T>::difference_type difference_type;
+		typedef typename ft::iterator<std::random_access_iterator_tag,
+		T>::pointer pointer;
+		typedef typename ft::iterator<std::random_access_iterator_tag,
+		T>::reference reference;
 
 		random_access_iterator() : _ptr(0)
 		{}

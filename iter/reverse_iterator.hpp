@@ -5,11 +5,12 @@ namespace ft{
 	class reverse_iterator{
 	public:
 		typedef BidirectionalIterator							iterator_type;
-		typedef typename ft::iterator_traits<BidirectionalIterator>::value_type        value_type;
-		typedef typename ft::iterator_traits<BidirectionalIterator>::difference_type	difference_type;
-		typedef typename ft::iterator_traits<BidirectionalIterator>::pointer           pointer;
-		typedef typename ft::iterator_traits<BidirectionalIterator>::reference         reference;
-		typedef typename ft::iterator_traits<BidirectionalIterator>::iterator_category	iterator_category;
+		typedef typename ft::iterator_traits<iterator_type>::value_type
+		value_type;
+		typedef typename ft::iterator_traits<iterator_type>::difference_type	difference_type;
+		typedef typename ft::iterator_traits<iterator_type>::pointer           pointer;
+		typedef typename ft::iterator_traits<iterator_type>::reference         reference;
+		typedef typename ft::iterator_traits<iterator_type>::iterator_category	iterator_category;
 
 		reverse_iterator() {};
 		explicit reverse_iterator (iterator_type it) : _it(it) {}
