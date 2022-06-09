@@ -413,13 +413,14 @@ int main()
 			  << fifth.capacity() << " "
 			  << (fifth.empty() ? "EMPTY" : "NOT EMPTY") << " "
 			  << std::endl;
-//	try {
-//		ft::vector<int> check(1, 2);
+	try {
+		ft::vector<int> check(1, 2);
 //		ft::vector<int>::const_iterator c_it = check.begin();
-//		ft::vector<int>::iterator it = check.begin();
-//		*c_it = 10;
-//		std::cout << "BAD\n";
-//	} catch (...){
-//		std::cout << "ALL FINE\n";
-//	}
+		ft::vector<int>::iterator it = check.begin();
+		*it = 10;
+		std::cout << "BAD\n";
+		std::cout << *it << "\n";
+	} catch (...){
+		std::cout << "ALL FINE\n";
+	}
 }

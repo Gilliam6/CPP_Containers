@@ -55,7 +55,7 @@ test: $(STD) $(FT)
 		@echo "=-=-=-=-= DIFF =-=-=-=-="
 		@diff std ft || true
 		@echo "=-=-=-= END DIFF =-=-=-="
-		@#cat -e ft
+		@cat -e ft
 		@rm -f std ft
 
 $(STD): $(OBJ_DIR_STD) $(OBJ_STD)

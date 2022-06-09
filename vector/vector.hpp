@@ -1,12 +1,9 @@
 #pragma once
 #include <iostream>
-//#include "Utilities.hpp"
 #include "../iter/iterator.hpp"
 #include "../iter/reverse_iterator.hpp"
 #include "../iter/random_access_iterator.hpp"
 #include "../utils/utils.hpp"
-#include <memory>
-#include <vector>
 namespace ft{
 	template< class T, class Allocator = std::allocator<T> >
 	class vector{
@@ -20,7 +17,8 @@ namespace ft{
 		typedef typename allocator_type::const_pointer			const_pointer;
 		typedef typename allocator_type::size_type				size_type;
 		typedef ft::random_access_iterator<value_type>			iterator;
-		typedef ft::random_access_iterator<value_type>			const_iterator;
+		typedef ft::random_access_iterator<const value_type>
+		        const_iterator;
 		typedef ft::reverse_iterator<iterator>					reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 		typedef typename iterator::difference_type				difference_type;
@@ -31,17 +29,12 @@ namespace ft{
 
 		explicit vector (size_type n,
 						 const value_type& val = value_type(),
-						 const allocator_type& alloc = allocator_type())
+						 const allocator_type& alloc = allocator_type()):
+						 _alloc(alloc), _size(n), _cap(n)
 		{
-			if (n == _size)
-				return;
-			_alloc = alloc;
 			_arr = _alloc.allocate(n);
-			_cap = n;
-			_size = n;
-//			value_type *tmp = _arr;
-			for (size_t i = 0; i < n; i++)
-				_alloc.construct(_arr + i, val);
+			while (n--)
+				_alloc.construct(_arr + n, val);
 		}
 
 		template<class InputIterator>
@@ -85,11 +78,7 @@ namespace ft{
 				_alloc.construct(tmp++, *it);
 			return *this;
 		}
-//		template <class InputIterator>
-//		void assign (InputIterator first, InputIterator last){
-//			clear();
-//			insert(begin(), first, last);
-//		}
+
 		template<class InputIterator>
 		void assign(InputIterator first, InputIterator last,
 					typename ft::enable_if<!ft::is_integral<InputIterator>::value
@@ -106,10 +95,7 @@ namespace ft{
 				_size++;
 			}
 		}
-//		void assign (size_type n, const value_type& val) {
-//			clear();
-//			insert(begin(), n, val);
-//		}
+
 		void assign(size_type n, const value_type &val)
 		{
 			this->clear();
@@ -143,10 +129,6 @@ namespace ft{
 
 		void resize (size_type n, value_type val = value_type())
 		{
-//			if (!val)
-//				val = 0;
-//			if (n < 0)
-//				throw std::logic_error("Error: Incorrect size!");
 			if (n == _size)
 				return;
 			if (n < _size)
@@ -203,8 +185,6 @@ namespace ft{
 				throw;
 			}
 			++_size;
-//			++_size;
-
 		}
 
 		void pop_back()
@@ -250,38 +230,7 @@ namespace ft{
 			}
 			return (begin() + dist);
 		}
-//		void insert( iterator pos, size_type count, const T& value )
-//		{
-//			if (pos > end() || pos < begin())
-//				throw std::logic_error("Error: Bad position index!/n");
-//			value_type *new_arr, *tmp;
-//			size_type new_cap = _cap;
-//			if (_size + count > _cap)
-//			{
-//				new_arr = _alloc.allocate(_size + count);
-//				new_cap = _size + count;
-//			}
-//			else
-//				new_arr = _alloc.allocate(_cap);
-//			tmp = new_arr;
-//			_size += count;
-//			size_type i = 0;
-//			for (iterator it = begin(); it != end(); it++)
-//			{
-//				if (it == pos)
-//				{
-//					while(count--)
-//						_alloc.construct(tmp + i, value);
-//					i++;
-//				}
-//				_alloc.construct(tmp + i, *it);
-//				i++;
-//				_alloc.destroy(it.base());
-//			}
-//			_alloc.deallocate(_arr, _cap);
-//			_arr = new_arr;
-//			_cap = new_cap;
-//		}
+
 		void insert(iterator position, size_type n, const value_type &val)
 		{
 			if (_size + n > _cap)
@@ -411,24 +360,6 @@ namespace ft{
 			ft::swap(this->_size, x._size);
 			ft::swap(this->_cap, x._cap);
 			ft::swap(this->_arr, x._arr);
-
-//			::swap(*this, x);
-//			pointer tmp = reinterpret_cast<pointer>(new char[_cap * sizeof(value_type)]);
-//			uintptr_t *tmp = reinterpret_cast<uintptr_t*>(this);
-//			*this = x;
-//			&x = reinterpret_cast<vector*>(*tmp);
-//			allocator_type tmp_alloc = _alloc;
-//			value_type* tmp_arr = _arr;
-//			size_type tmp_size = _size;
-//			size_type tmp_cap = _cap;
-//			_alloc = x._alloc;
-//			_arr = x._arr;
-//			_size = x._size;
-//			_cap = x._cap;
-//			x._alloc = tmp_alloc;
-//			x._arr = tmp_arr;
-//			x._size = tmp_size;
-//			x._cap = tmp_cap;
 		}
 
 		allocator_type get_allocator() const { return _alloc; }
@@ -486,10 +417,4 @@ namespace ft{
 	{
 		return !(lhs < rhs);
 	}
-//	template <class T>
-//	void swap (T& ls, T& rs) {
-//		T tmp = ls;
-//		ls = rs;
-//		rs = tmp;
-//	}
 }
