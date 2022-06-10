@@ -17,7 +17,7 @@ namespace ft{
 		typedef typename allocator_type::const_pointer			const_pointer;
 		typedef typename allocator_type::size_type				size_type;
 		typedef ft::random_access_iterator<value_type>			iterator;
-		typedef ft::random_access_iterator<const value_type>
+		typedef ft::random_access_iterator< value_type>
 		        const_iterator;
 		typedef ft::reverse_iterator<iterator>					reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -86,9 +86,12 @@ namespace ft{
 		{
 			clear();
 			size_type distance = ft::distance(first, last);
-			this->clear();
 			if (distance > _cap)
-				reserve(distance);
+			{
+				_alloc.deallocate(_arr, _cap);
+				_arr = _alloc.allocate(distance);
+				_cap = distance;
+			}
 			for (InputIterator it = first; it != last; it++)
 			{
 				_alloc.construct(_arr + _size, *it);
@@ -98,17 +101,17 @@ namespace ft{
 
 		void assign(size_type n, const value_type &val)
 		{
-			this->clear();
+			clear();
 			if (n == 0)
 				return ;
 			if (n > _cap)
-				reserve(n);
-			while(n)
 			{
-				_alloc.construct(_arr + _size++, val);
-				n--;
+				_alloc.deallocate(_arr, _cap);
+				_arr = _alloc.allocate(n);
+				_cap = n;
 			}
-
+			while(_size < n)
+				_alloc.construct(_arr + _size++, val);
 		}
 		//Iterators
 		iterator begin() {return iterator(_arr);}
@@ -132,30 +135,14 @@ namespace ft{
 			if (n == _size)
 				return;
 			if (n < _size)
-			{
-				erase(&_arr[n], end());
-				_size = n;
-			}
+				while (--_size > n)
+					_alloc.destroy(_arr + _size);
 			else if (n > _cap && n <= _cap * 2)
-			{
 				reserve(_cap * 2);
-				for (size_type i = _size; i < n; ++i) //?????
-					_alloc.construct(_arr + i, val);
-				_size = n;
-			}
 			else if (n > _cap && n > _cap * 2)
-			{
 				reserve(n);
-				for (size_type i = _size; i < n; ++i) //?????
-					_alloc.construct(_arr + i, val);
-				_size = n;
-			}
-			else
-			{
-				for (size_type i = _size; i < n; ++i)
-					_alloc.construct(_arr + i, val);
-				_size = n;
-			}
+			while (_size < n)
+				_alloc.construct(_arr + _size++, val);
 		}
 
 		void reserve(size_t n)
@@ -349,10 +336,10 @@ namespace ft{
 		}
 
 		void clear() {
-			for (size_type i = 0; i != _size; ++i)
-				_alloc.destroy(_arr + i);
-			_size = 0;
+			while (_size > 0)
+				_alloc.destroy(_arr + (--_size));
 		}
+
 		void swap (vector& x) {
 			if (x == *this)
 				return;
@@ -372,9 +359,6 @@ namespace ft{
 
 	private:
 		value_type		*_arr;
-		pointer 		_start;
-		pointer 		_end;
-		pointer 		_end_cap;
 		allocator_type	_alloc;
 		size_type		_size;
 		size_type 		_cap;
