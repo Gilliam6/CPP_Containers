@@ -116,6 +116,76 @@ namespace ft{
 		ls = rs;
 		rs = tmp;
 	}
+
+	template<class Arg1, class Arg2, class Result> struct binary_function {
+		typedef Arg1		first_argument_type;
+		typedef Arg2		second_argument_type;
+		typedef Result		result_type;
+	};
+
+	template< class T >
+	struct less: public std::binary_function<T, T, bool>{
+	public:
+		bool operator()( const T& lhs, const T& rhs ) const{
+			return lhs < rhs;
+		}
+	};
+
+	template< class T1,class T2 > struct pair{
+	public:
+		typedef T1	first_type;
+		typedef T2	second_type;
+		first_type	first;
+		second_type	second;
+
+		pair(): first(0), second(0) {}
+		pair( const T1& x, const T2& y ): first(x), second(y) {}
+		pair( const pair& p ): first(p.first), second(p.second) {}
+		template< class U1, class U2 >
+		pair( const pair<U1, U2>& p ): first(p.first), second(p.second) {}//
+		// ?? вопросы с возможностью использовать другие типы
+
+		pair& operator=( const pair& other ) {
+			first = new first_type(other.first);
+			second = new second_type(other.second);
+			return *this;
+		}
+	};
+
+	template< class T1, class T2 >
+	ft::pair<T1,T2> make_pair( T1 t, T2 u ){
+		return (ft::pair<T1,T2>(t, u));
+	}
+
+	template< class T1, class T2 >
+	bool operator==( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ){
+		return ((lhs.first == rhs.first) && (lhs.second == rhs.second));
+	}
+
+	template< class T1, class T2 >
+	bool operator!=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ){
+		return !(lhs == rhs);
+	}
+
+	template< class T1, class T2 >
+	bool operator<( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ){
+		return ((lhs.first < rhs.first) && (lhs.second < rhs.second));
+	}
+
+	template< class T1, class T2 >
+	bool operator<=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ){
+		return (!(rhs < lhs));
+	}
+
+	template< class T1, class T2 >
+	bool operator>( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ){
+		return ((lhs.first > rhs.first) && (lhs.second > rhs.second));
+	}
+
+	template< class T1, class T2 >
+	bool operator>=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ){
+		return (!(lhs < rhs));
+	}
 //	template <class T, class Alloc>
 //	void swap_1 (vector<T,Alloc>& x, vector<T,Alloc>& y) {
 //		uintptr_t tmp = reinterpret_cast<uintptr_t>(x);
