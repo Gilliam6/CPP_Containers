@@ -413,14 +413,30 @@ int main()
 			  << fifth.capacity() << " "
 			  << (fifth.empty() ? "EMPTY" : "NOT EMPTY") << " "
 			  << std::endl;
-	try {
-		ft::vector<int> check(1, 2);
-//		ft::vector<int>::const_iterator c_it = check.begin();
-		ft::vector<int>::iterator it = check.begin();
-		*it = 10;
-		std::cout << "BAD\n";
-		std::cout << *it << "\n";
-	} catch (...){
-		std::cout << "ALL FINE\n";
-	}
+//	try {
+//		ft::vector<int> check(1, 2);
+//		ft::vector<int>::const_iterator c_it;
+////		ft::vector<int>::iterator it = check.begin();
+//		*c_it = 10;
+//		std::cout << "BAD\n";
+//		std::cout << *it << "\n";
+//	} catch (...){
+//		std::cout << "ALL FINE\n";
+//	}
+//	std::vector<int> std_vector2(5,2);
+//	ft::vector<int> ft_vector2(5,2);
+//
+//	std::cout << "Const iterators check :" << std::endl;
+//	std::vector<int>::const_iterator std_it = std_vector2.begin();
+//	size_t std_it1 = *std_vector2.begin();
+//	ft::vector<int>::const_iterator ft_it = ft_vector2.begin();
+//	size_t ft_it1 = *ft_vector2.begin();
+//	*std_it = 40;
+//	*ft_it = 40;
+//	std::cout << "std_it = " << *std_it << " std_it1 = " << std_it1;
+//	std::cout << " ft_it = " << *ft_it << " ft_it1 = " << ft_it1;
+//	if (*ft_it == ft_it1)
+//		std::cout << "      OK =)"<< std::endl;
+//	else
+//		std::cout << "      NOK!"<< std::endl;
 }
