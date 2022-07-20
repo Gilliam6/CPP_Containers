@@ -146,8 +146,8 @@ namespace ft{
 		// ?? вопросы с возможностью использовать другие типы
 
 		pair& operator=( const pair& other ) {
-			first = new first_type(other.first);
-			second = new second_type(other.second);
+			first = other.first;
+			second = other.second;
 			return *this;
 		}
 	};
@@ -156,6 +156,16 @@ namespace ft{
 	ft::pair<T1,T2> make_pair( T1 t, T2 u ){
 		return (ft::pair<T1,T2>(t, u));
 	}
+
+	template <class T>
+		struct switch_const {
+			typedef T type;
+		};
+
+	template <class T>
+		struct switch_const<const T> {
+			typedef T type;
+		};
 
 	template< class T1, class T2 >
 	bool operator==( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ){

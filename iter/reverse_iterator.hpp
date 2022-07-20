@@ -19,9 +19,9 @@ namespace ft{
 
 		iterator_type base() const {return _it;}
 		reference operator*() const {
-			BidirectionalIterator tmp;
+			iterator_type tmp;
 			tmp = _it;
-			return *tmp;
+			return *(--tmp);
 		}
 		reverse_iterator operator+ (difference_type n) const {
 			return reverse_iterator(_it - n);
@@ -32,12 +32,12 @@ namespace ft{
 		}
 		reverse_iterator& operator++(){
 			--_it;
-			return _it;
+			return *this;
 		}
 		reverse_iterator operator++(int)
 		{
-			BidirectionalIterator tmp(_it);
-			--_it;
+			reverse_iterator tmp(_it);
+			++(*this);
 			return tmp;
 		}
 
@@ -49,8 +49,8 @@ namespace ft{
 
 		reverse_iterator operator--(int)
 		{
-			BidirectionalIterator tmp(_it);
-			++_it;
+			reverse_iterator tmp(_it);
+			--(*this);
 			return tmp;
 		}
 		reverse_iterator operator- (difference_type n) const {
@@ -61,10 +61,10 @@ namespace ft{
 			return *this;
 		}
 		pointer operator->() const{
-			return _it.operator->();
+			return &(operator*());
 		}
 		reference operator[] (difference_type n) const{
-			return *(_it - n);
+			return *(operator-(n));
 		}
 	private:
 		BidirectionalIterator _it;
