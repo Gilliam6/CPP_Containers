@@ -121,8 +121,8 @@ namespace ft{
 
 		reverse_iterator rbegin() {return reverse_iterator(_arr + _size - 1);}
 		const_reverse_iterator rbegin() const {return reverse_iterator(_arr + _size - 1);}
-		reverse_iterator rend() {return reverse_iterator(_arr - 1);}
-		const_reverse_iterator rend() const {return reverse_iterator(_arr - 1);}
+		reverse_iterator rend() {return reverse_iterator(begin());}
+		const_reverse_iterator rend() const {return reverse_iterator(begin());}
 
 		//Capacity
 		size_type size() const {return (_size);}
@@ -341,8 +341,6 @@ namespace ft{
 		}
 
 		void swap (vector& x) {
-			if (x == *this)
-				return;
 			ft::swap(this->_alloc, x._alloc);
 			ft::swap(this->_size, x._size);
 			ft::swap(this->_cap, x._cap);

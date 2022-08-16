@@ -5,17 +5,20 @@
 #include "../iter/reverse_iterator.hpp"
 #include "../utils/red_black_tree.hpp"
 #include "../iter/BidirectionalMapIterator.hpp"
+#include "../utils/pair.hpp"
+
 namespace ft{
 	template<
 			class Key,
 			class T,
 			class Compare = ft::less<Key>,
-			class Allocator = std::allocator<ft::pair<Key, T> >
+			class Allocator = std::allocator<ft::pair<const Key, T> >
 	> class map{
 	public:
 		typedef Key														key_type;
 		typedef T														mapped_type;
-		typedef	ft::pair<Key, T>									value_type;
+		typedef	ft::pair<const Key, T>									value_type;
+		typedef typename Allocator::template rebind <RBT_Node <value_type> >::other node_allocator_type;
 		typedef size_t													size_type;
 		typedef ptrdiff_t												difference_type;
 		typedef Compare													key_compare;
@@ -37,7 +40,6 @@ namespace ft{
 			 const Compare& comp = Compare(),
 			 const Allocator& alloc = Allocator() ): _size(0), _alloc(alloc), _k_cmp(comp), _root(0)
 		{
-			_root = _tree.make_node(value_type());
 			insert(first, last);
 		}
 		explicit map( const Compare& comp,
@@ -59,7 +61,7 @@ namespace ft{
 			return *this;
 		}
 
-		allocator_type get_allocator() const { return _alloc;}
+		allocator_type get_allocator() const { return (_alloc); }
 
 		mapped_type& at( const key_type& key )
 		{
@@ -82,12 +84,9 @@ namespace ft{
 			node_ptr tmp = _tree.find_node(_root, bind(key));
 			if (tmp)
 				return (tmp->data.second);
-			bool res = _tree.insert(_root,_tree.make_node(ft::make_pair(key, mapped_type())));
-			if (res)
-			{
-				_size++;
-				return ((_tree.find_node(_root, bind(key))->data.second));
-			}
+			node_ptr new_node = _tree.make_node(bind(key));
+			_size += _tree.insert(_root, new_node);
+			return (new_node->data.second);
 		}
 
 		ft::pair<iterator, bool> insert(const value_type& val)
@@ -106,8 +105,10 @@ namespace ft{
 		template <class InputIt>
 			void	insert(InputIt begin, InputIt last)
 			{
-				for (;begin != last; begin++)
-					insert(*begin);
+				while (begin != last)
+				{
+					insert(*begin++);
+				}
 			}
 
 		void	erase(iterator pos)
@@ -118,7 +119,6 @@ namespace ft{
 		bool	erase(const key_type &key)
 		{
 			bool res = _tree.erase_val(_root, bind(key));
-			std::cout << (res?"TRUE\n":"FALSE\n");
 			_size -= res;
 			return (res);
 		}
@@ -254,7 +254,7 @@ namespace ft{
 			}
 		};
 
-		typedef ft::RBT <value_type, pair_compare>							tree_type;
+		typedef ft::RBT <value_type, pair_compare, ft::RBT_Node<value_type>, node_allocator_type>							tree_type;
 	private:
 		size_type		_size;
 		allocator_type	_alloc;
@@ -276,7 +276,7 @@ namespace ft{
 
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator<(const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y) {
-		return ft::lexicographical_compare( x.begin(), x.end(), y.begin(), y.end()) && x != y;
+		return ft::lexicographical_compare( x.begin(), x.end(), y.begin(), y.end()) && (x != y);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

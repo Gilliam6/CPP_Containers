@@ -4,7 +4,7 @@
 #include <iterator>
 #include "../utils/red_black_tree.hpp"
 #include "../utils/utils.hpp"
-
+#include "../utils/pair.hpp"
 namespace ft
 {
 
@@ -13,32 +13,25 @@ namespace ft
 		ft::iterator<std::bidirectional_iterator_tag, T>
 	{
 	public:
-		typedef T* iterator_type;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag,
-		T>::iterator_category iterator_category;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag,
-		T>::value_type value_type;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag,
-		T>::difference_type difference_type;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag,
-		T>::pointer pointer;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag,
-		T>::reference reference;
-		typedef typename ft::RBT<typename ft::switch_const<T>::type>::node_ptr node_ptr;
-
+		typedef typename ft::iterator_traits<T *>::difference_type difference_type;
+		typedef typename ft::iterator_traits<T *>::value_type value_type;
+		typedef typename ft::iterator_traits<T *>::pointer pointer;
+		typedef typename ft::iterator_traits<T *>::reference reference;
+		typedef ft::RBT_Node<typename ft::switch_const<T>::type> *node_ptr;
+		typedef std::bidirectional_iterator_tag iterator_category;
 
 		BidirectionalmapIterator(): _root(0), _ptr(0) {}
 	//	BidirectionalmapIterator(const pointer a, const pointer b): _root(a), _ptr(b) {}
 		explicit BidirectionalmapIterator(const node_ptr &root, const node_ptr &node): _root(root), _ptr(node) {}
 		BidirectionalmapIterator(const BidirectionalmapIterator &ar): _root(ar._root), _ptr(ar._ptr) {}
-		BidirectionalmapIterator& operator=(const BidirectionalmapIterator &ar)
-		{
-			if (this == &ar)
-				return (*this);
-			_ptr = ar._ptr;
-			_root = ar._root;
-			return (*this);
-		}
+//		BidirectionalmapIterator& operator=(const BidirectionalmapIterator &ar)
+//		{
+//			if (this == &ar)
+//				return (*this);
+//			_ptr = ar._ptr;
+//			_root = ar._root;
+//			return (*this);
+//		}
 		~BidirectionalmapIterator() {};
 
 		template <class Type>
@@ -46,7 +39,7 @@ namespace ft
 			{
 				return BidirectionalmapIterator<const Type>(_root, _ptr);
 			}
-		reference operator*() { return (_ptr->data); }
+		reference operator*() const { return (_ptr->data); }
 		pointer operator->() const { return (&(_ptr->data)); }
 
 		BidirectionalmapIterator& operator++()

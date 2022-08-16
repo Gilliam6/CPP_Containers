@@ -1,4 +1,4 @@
-CFLAGS = -g -O0 -fsanitize=address -std=c++98 -Wall -Wextra -Werror
+CFLAGS =  -O0  -std=c++98 -Wall -Wextra -Werror
 CPP = c++
 
 NAME = ft_containers
@@ -8,7 +8,7 @@ FT = ftTest
 TEST_BOOL1 = -D STATUS=1
 TEST_BOOL0 = -D STATUS=0
 
-SOURCE_LIST = vector.cpp
+SOURCE_LIST = main.cpp
 SRC_DIR = tests/
 SOURCE = OBJ = $(addprefix $(SRC_DIR), $(SOURCE_LIST))
 
@@ -24,8 +24,8 @@ OBJ_DIR_FT = objects_ft/
 OBJ_LIST = $(patsubst %.cpp, %.o, $(SOURCE_LIST))
 OBJ_FT = $(addprefix $(OBJ_DIR_FT), $(OBJ_LIST))
 
-INCLUDE = -Ivector/ -Iutils/ -Iiter/
-HEADER = vector/vector.hpp iter/*.hpp utils/utils.hpp
+INCLUDE = -Ivector/ -Iutils/ -Iiter/ -Imap/
+HEADER = vector/vector.hpp iter/*.hpp utils/*.hpp stack/stack.hpp map/map.hpp
 RM = rm -f
 
 GREEN = \033[0;32m
@@ -50,12 +50,13 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp $(HEADER)
 #TEST FIELD
 
 test: $(STD) $(FT)
-		@./$(FT) > ft
-		@./$(STD) > std
+		@./$(FT) 121 > ft
+		@./$(STD) 121  > std
 		@echo "=-=-=-=-= DIFF =-=-=-=-="
 		@diff std ft || true
 		@echo "=-=-=-= END DIFF =-=-=-="
 		@cat -e ft
+		@cat -e std
 		@rm -f std ft
 
 $(STD): $(OBJ_DIR_STD) $(OBJ_STD)
